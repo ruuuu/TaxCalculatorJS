@@ -54,21 +54,15 @@ formAusn.addEventListener('input', () => {                                    //
 
 //   калькулятор Самозанятый:
 
-
-const selfEmployment = document.querySelector('.self-employment');
+const selfEmployment = document.querySelector('.self-employment');                        // <section>
 const formSelfEmployment = selfEmployment.querySelector('.calc__form--selfemployment');                            //   форма
-const resultTax = selfEmployment.querySelector('.result__tax--selfemployment');
+const resultTaxSelfEmpolyment = selfEmployment.querySelector('.result__tax--selfemployment');
 
 
 
 formSelfEmployment.addEventListener('input', () => {                                     //  когда будем вводить символ в поле, сработает событие
-      if (formSelfEmployment.incomeFizik.name === 'incomeFizik') {
-            resultTax.textContent = formSelfEmployment.incomeFizik.value * 0.04;          // formSelfEmployment.incomeFizik  первое поле
-
-      }
-
-      if (formSelfEmployment.incomeLower.name === 'incomeLower') {
-            resultTax.textContent = (formSelfEmployment.incomeFizik.value + formSelfEmployment.incomeLower.value) * 0.06;
-      }
+      const resIndividual = formSelfEmployment.incomeFizik.value * 0.04;
+      const resEntity = formSelfEmployment.incomeLower.value * 0.06;
+      resultTaxSelfEmpolyment.textContent = resIndividual + resEntity;
 
 });
