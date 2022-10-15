@@ -7,9 +7,15 @@ const formatCurrency = (n) => {
       });
 
       return currency.format(n);
-
 }
 
+
+const debounceTimer = (fn, msec) => { // debounce, fn- функция написанная нами,  msec-число милисекунд, тое тсь задержка
+
+      return () => {  // эту функцю будем вызывать с задержкой
+
+      }
+};
 
 
 
@@ -55,18 +61,21 @@ const formatCurrency = (n) => {
 
       calcLabelExpenses.style.display = 'none';
 
-      formAusn.addEventListener('input', () => {                                      //   событие вешаем на форму,событие input- происходит при вводе текста, то есть при изменении атриюута  value  у input/textarea
+      formAusn.addEventListener('input', () => {                                      //   событие вешаем на форму,событие input- происходит при вводе символа, то есть при изменении атриюута  value  у input/textarea
             // чтобы получить элемент формы пишем так: formAusn.<значение атрибута name у поля>
             // console.log(formAusn.income.value);                                    //   у input есть атрибт name="income", так можно обрабтиться к значнеию атрибута name
             // console.log(formAusn.expenses.value);
 
+            const income = formAusn.income.value;
+
             if (formAusn.type.value === 'income') {                                       //   <input type="radio" name="type" value="income">  если выбрали 1-ую радиокнокупку
                   calcLabelExpenses.style.display = 'none';
                   formAusn.income.value = '';
-                  resultTaxTotal.textContent = formatCurrency(formAusn.income.value * 0.08);
+                  resultTaxTotal.textContent = formatCurrency(income * 0.08);
             }
             if (formAusn.type.value === 'expenses') {                                     //   <input name="type" value="expenses">  если выбрали 2-ую радиокнопку
-                  resultTaxTotal.textContent = formatCurrency((formAusn.income.value - formAusn.expenses.value) * 0.2);
+                  const expenses = +formAusn.expenses.value;                             // + приводит из строки к числу
+                  resultTaxTotal.textContent = formatCurrency((income - expenses) * 0.2);
                   calcLabelExpenses.style.display = 'block';
             }
 
@@ -103,7 +112,7 @@ const formatCurrency = (n) => {
       checkCompensation();                                                                      // нач значение
 
 
-      formSelfEmployment.addEventListener('input', () => {                                     //  событие вешаем на форму, когда будем вводить символ в поле, сработает событие 'input'
+      formSelfEmployment.addEventListener('input', () => {                                     //  событие вешаем на форму, когда будем вводить символ в поле  или переключении чекбоксов/радиокнопок,, сработает событие 'input'
             const resIndividual = formSelfEmployment.incomeFizik.value * 0.04;                  //  formSelfEmployment.incomeFizik.value -значение поля <inut name="incomeFizik">
             const resEntity = formSelfEmployment.incomeLower.value * 0.06;
             checkCompensation();
@@ -164,7 +173,7 @@ const formatCurrency = (n) => {
 
 
 
-      formOsno.addEventListener('input', () => {   // событие вешаем на форму, при каждом вводе символа, вызовется прелаваемая  функция. Событие 'change' проиходйет при смене
+      formOsno.addEventListener('input', () => {   // событие вешаем на форму, при каждом вводе символа/переключении чекбоксов/радиокнопок, вызовется прелаваемая  функция. Событие 'change' проиходйет при смене
             checkFormBusinness();
 
             const income = formOsno.income.value;  // значние поля <input name="income" type="text">
@@ -281,10 +290,10 @@ const formatCurrency = (n) => {
       formOsn.addEventListener('input', () => {             //   событие вешаем на форму, при каждом вовде в поле, оно сработает
             checkShowProperty(formOsn.typeTax.value);       //   formOsn.typeTax.value это значение value у радиокнопки (name="typeTax")
 
-            const income = formOsn.income.value;
-            const expenses = formOsn.expenses.value;
-            const contributions = formOsn.contributions.value;
-            const property = formOsn.property.value;
+            const income = +formOsn.income.value;                 // приводимстроку к числу
+            const expenses = +formOsn.expenses.value;
+            const contributions = +formOsn.contributions.value;
+            const property = +formOsn.property.value;
 
             let profit = income - contributions;
             if (formOsn.typeTax.value !== 'income') {
@@ -304,7 +313,36 @@ const formatCurrency = (n) => {
       });
 
 
+}
 
 
+// Калькулятор 13%:
+{
+      const taxReturn = document.querySelector('.tax-return');
+      const formTaxReturn = taxReturn.querySelector('.calc__form');
 
+      const resultTaxNdfl = taxReturn.querySelector('.result__tax--ndfl');
+      const resultTaxPossible = taxReturn.querySelector('.result__tax--possible');
+      const resultTaxDeduction = taxReturn.querySelector('.result__tax--deduction');
+
+      let timer;
+      formTaxReturn.addEventListener('input', ({ target }) => {  // событие вешаем на орту, оно сработате если нажмем на чекбокс/радиокнопку, ввод символов в  поле
+            clearTimeout();  // или clearInterval(). Не запускать функцию
+
+            timer = setTimeout(() => { //  запустит фнукицю корую передали через определенное время (в ms)
+                  //console.log('target ', target.value);
+
+                  const expenses = +formTaxReturn.expenses.value;
+                  const income = +formTaxReturn.income.value;
+                  const sumExpense = +formTaxReturn.someExpenses.value;
+
+                  const ndfl = 0.13 * income;
+                  const possibleDeduction = expenses < sumExpense ? expenses * 0.13 : sumExpense * 0.13;
+                  const deduction = possibleDeduction < ndfl ? possibleDeduction : ndfl;
+
+                  resultTaxNdfl.textContent = formatCurrency(ndfl);
+                  resultTaxPossible.textContent = formatCurrency(possibleDeduction);
+                  resultTaxDeduction.textContent = formatCurrency(deduction);
+            }, 500); // 500 ms, фукняи вызоветися  1 раз в полсекунды
+      });
 }
