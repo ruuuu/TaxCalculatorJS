@@ -10,9 +10,30 @@ const formatCurrency = (n) => {
 }
 
 
-const debounceTimer = (fn, msec) => { // debounce, fn- функция написанная нами,  msec-число милисекунд, тое тсь задержка
 
-      return () => {  // эту функцю будем вызывать с задержкой
+
+const debounceTimer = (fn, msec) => {                       // debounce, fn- функция написанная нами,  msec-число милисекунд, тое тсь задержка
+
+      let lastCall = 0;
+      let lastCallTimer;            // № таймера
+
+
+
+      return (...arg) => {                                  // эту функцю будем вызывать с задержкой, у  arg используется  ... , чтоыб распаквать его
+            const previousCall = lastCall;            // previousCall - предыдущий вызов фукнции, lastCall-последни вызов функии
+
+
+            lastCall = Date.now();                    //  число милисекунд от 1970 года
+
+            if (previousCall && ((lastCall - previousCall) <= msec)) {
+                  clearTimeout();
+
+            }
+
+            setTimeout(() => {
+                  fn(...arg);                               // запускаем переданную функию с задержкой 
+            }, msec)
+
 
       }
 };
@@ -61,7 +82,7 @@ const debounceTimer = (fn, msec) => { // debounce, fn- функция напис
 
       calcLabelExpenses.style.display = 'none';
 
-      formAusn.addEventListener('input', () => {                                      //   событие вешаем на форму,событие input- происходит при вводе символа, то есть при изменении атриюута  value  у input/textarea
+      formAusn.addEventListener('input', debounceTimer(() => {                                      //   событие вешаем на форму,событие input- происходит при вводе символа, то есть при изменении атриюута  value  у input/textarea
             // чтобы получить элемент формы пишем так: formAusn.<значение атрибута name у поля>
             // console.log(formAusn.income.value);                                    //   у input есть атрибт name="income", так можно обрабтиться к значнеию атрибута name
             // console.log(formAusn.expenses.value);
@@ -79,7 +100,7 @@ const debounceTimer = (fn, msec) => { // debounce, fn- функция напис
                   calcLabelExpenses.style.display = 'block';
             }
 
-      });
+      }), 1000); //  1c = 1000ms, через 1с функция отработает
 }
 
 
@@ -343,6 +364,6 @@ const debounceTimer = (fn, msec) => { // debounce, fn- функция напис
                   resultTaxNdfl.textContent = formatCurrency(ndfl);
                   resultTaxPossible.textContent = formatCurrency(possibleDeduction);
                   resultTaxDeduction.textContent = formatCurrency(deduction);
-            }, 500); // 500 ms, фукняи вызоветися  1 раз в полсекунды
+            }, 500); // 500 ms, то есть функция вызовется  1 раз в полсекунды
       });
 }
