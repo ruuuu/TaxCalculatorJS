@@ -7,7 +7,7 @@ export const formatCurrency = (n) => {
       });
 
       return currency.format(n);
-}
+};
 
 
 
@@ -44,17 +44,6 @@ export const debounceTimer = (fn, msec) => {                       // debounce, 
 // код берем в фигурные скобки чтобы изолировать его др от друга(чтобы на использваоне пременнеы не ругался)
 
 
-
-
-
-
-
-
-
-
-
-
-
 // Калькулятор 13%:
 {
       const taxReturn = document.querySelector('.tax-return');
@@ -68,10 +57,10 @@ export const debounceTimer = (fn, msec) => {                       // debounce, 
       formTaxReturn.addEventListener('input', ({ target }) => {  // событие вешаем на орту, оно сработате если нажмем на чекбокс/радиокнопку, ввод символов в  поле
             clearTimeout();  // или clearInterval(). Не запускать функцию
 
-            timer = setTimeout(() => { //  запустит фнукицю корую передали через определенное время (в ms)
+            timer = setTimeout(() => { //  запустит фнукицю которую передали через определенное время (в ms)
                   //console.log('target ', target.value);
 
-                  const expenses = +formTaxReturn.expenses.value;
+                  const expenses = +formTaxReturn.expenses.value;             // + приводит стчроку к числу
                   const income = +formTaxReturn.income.value;
                   const sumExpense = +formTaxReturn.someExpenses.value;
 

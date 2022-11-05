@@ -78,7 +78,7 @@ checkShowProperty(formOsn.typeTax.value);             //  нач значени�
 const percent = {
       'income': 0.06,
       'ip-expenses': 0.15,
-      'ooo-expenses': 0.15
+      'ooo-expenses': 0.15,
 };
 
 

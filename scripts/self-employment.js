@@ -1,4 +1,5 @@
 //   калькулятор Самозанятый:
+import { formatCurrency } from "./script.js";
 
 const selfEmployment = document.querySelector('.self-employment');                              // <section>
 const formSelfEmployment = selfEmployment.querySelector('.calc__form--selfemployment');                //   форма
