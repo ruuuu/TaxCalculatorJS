@@ -55,7 +55,9 @@
 
         <div class="calc__wrapper">
           <div class="calc__form-wrapper">
-            <form class="calc__form calc__form--selfemployment">
+            <!--добаили id чтобы потом его значение вставить кнпоке calc__btn-reset(Очистить):-->
+            <form class="calc__form calc__form--selfemployment" id="self-employment">
+
               <label class="calc__label calc__label_input">
                 <span class="calc__text">Доход от физических лиц</span>
                 <input class="calc__input" type="number" name="incomeFizik"><!--  у Макса name="individual"-->
@@ -104,7 +106,8 @@
         </div>
 
         <div class="calc__reset">
-          <button class="calc__btn-reset" type="reset">Очистить</button>
+          <button class="calc__btn-reset" type="reset" form="self-employment">Очистить</button>
+          <!-- добавили атрибут form при этом форме добавилии тариьут  id="self-employment", чтобы по нажатию на кнпокуОчиисить,  блоки результата очищались -->
         </div>
       </section>
 
